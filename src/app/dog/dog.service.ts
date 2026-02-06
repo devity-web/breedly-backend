@@ -20,6 +20,11 @@ export class DogService {
       //   },
       // },
       where: {id},
+      include: {
+        weights: true,
+        healths: true,
+        owner: true,
+      },
     });
 
     if (!dog) {
@@ -31,7 +36,13 @@ export class DogService {
 
   async findAll() {
     this.logger.log('Find all dogs');
-    return this.prisma.dog.findMany();
+    return this.prisma.dog.findMany({
+      include: {
+        weights: true,
+        healths: true,
+        owner: true,
+      },
+    });
   }
 
   async create(data: CreateDogDto) {
