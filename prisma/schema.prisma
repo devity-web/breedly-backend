@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Customer {
+  id    String @id @default(uuid())
+  name  String
+  email String
+  phone String
+  dogs  Dog[]
+}
+
+model Weight {
+  id    String @id @default(uuid())
+  value Float
+  dogId String
+  dog   Dog    @relation(fields: [dogId], references: [id])
+}
+
+model Health {
+  id          String @id @default(uuid())
+  description String
+  dogId       String
+  dog         Dog    @relation(fields: [dogId], references: [id])
+}
+
+model Dog {
+  id           String   @id @default(uuid())
+  name         String
+  assignedName String?
+  passport     String?
+  bornAt       DateTime
+  ownerId      String?
+  owner        Customer? @relation(fields: [ownerId], references: [id])
+  healths      Health[]
+  weights      Weight[]
+}

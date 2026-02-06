@@ -1,35 +1,24 @@
 import {Injectable, Logger, NotFoundException} from '@nestjs/common';
-import {InjectRepository} from '@nestjs/typeorm';
-import {Repository} from 'typeorm';
-import {Dog} from './dog.entity';
+import {PrismaService} from '@utils/prisma.service';
 import {AddHealthDto} from './dto/add-health.dto';
 import {AddWeightDto} from './dto/add-weight.dto';
 import {CreateDogDto} from './dto/create-dog.dto';
 import {EditDogDto} from './dto/edit-dog.dto';
-import {Health} from './health.entity';
-import {Weight} from './weight.entity';
 
 @Injectable()
 export class DogService {
   private readonly logger = new Logger(DogService.name);
 
-  constructor(
-    @InjectRepository(Dog)
-    private dogsRepository: Repository<Dog>,
-    @InjectRepository(Weight)
-    private weightsRepository: Repository<Weight>,
-    @InjectRepository(Health)
-    private healthsRepository: Repository<Health>,
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
   async findOne(id: string) {
     this.logger.log(`Find one dog with id: ${id}`);
-    const dog = await this.dogsRepository.findOne({
-      order: {
-        weights: {
-          createdAt: 'DESC',
-        },
-      },
+    const dog = await this.prisma.dog.findUnique({
+      // order: {
+      //   weights: {
+      //     createdAt: 'DESC',
+      //   },
+      // },
       where: {id},
     });
 
@@ -42,13 +31,15 @@ export class DogService {
 
   async findAll() {
     this.logger.log('Find all dogs');
-    return this.dogsRepository.find();
+    return this.prisma.dog.findMany();
   }
 
-  async create(body: CreateDogDto) {
-    this.logger.log('Create a new dog with body', body);
-    const dog = this.dogsRepository.create(body);
-    return this.dogsRepository.save(dog);
+  async create(data: CreateDogDto) {
+    this.logger.log('Create a new dog with body', data);
+    const dog = await this.prisma.dog.create({
+      data,
+    });
+    return dog;
   }
 
   async addWeight(id: string, body: AddWeightDto) {
@@ -56,13 +47,18 @@ export class DogService {
       `Add weight to dog with id: ${id} and body: ${JSON.stringify(body)}`,
     );
     const dog = await this.findOne(id);
+    const weight = await this.prisma.weight.create({
+      data: {
+        ...body,
+        dog: {
+          connect: {
+            id: dog.id,
+          },
+        },
+      },
+    });
 
-    const weight = this.weightsRepository.create({...body, dog});
-    await this.weightsRepository.save(weight);
-
-    dog.weights.push(weight);
-
-    return this.dogsRepository.save(dog);
+    return weight;
   }
 
   async addHealth(id: string, body: AddHealthDto) {
@@ -71,12 +67,18 @@ export class DogService {
     );
     const dog = await this.findOne(id);
 
-    const health = this.healthsRepository.create({...body, dog});
-    await this.healthsRepository.save(health);
+    const health = await this.prisma.health.create({
+      data: {
+        ...body,
+        dog: {
+          connect: {
+            id: dog.id,
+          },
+        },
+      },
+    });
 
-    dog.healths.push(health);
-
-    return this.dogsRepository.save(dog);
+    return health;
   }
 
   async update(id: string, body: EditDogDto) {
@@ -85,7 +87,12 @@ export class DogService {
       `Update dog with id: ${id} and body: ${JSON.stringify(body)}`,
     );
 
-    const dog = await this.dogsRepository.save({id, ...body});
+    const dog = await this.prisma.dog.update({
+      data: body,
+      where: {
+        id,
+      },
+    });
 
     return dog;
   }

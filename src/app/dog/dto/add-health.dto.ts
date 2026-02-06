@@ -5,10 +5,5 @@ export class AddHealthDto {
   @IsNotEmpty()
   @IsString()
   @ApiProperty()
-  kind: string;
-
-  @IsNotEmpty()
-  @IsString()
-  @ApiProperty()
-  who: string;
+  description: string;
 }
