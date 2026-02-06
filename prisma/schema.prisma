@@ -9,36 +9,42 @@ datasource db {
 }
 
 model Customer {
-  id    String @id @default(uuid())
-  name  String
-  email String
-  phone String
-  dogs  Dog[]
+  id          String @id @default(uuid())
+  name        String
+  email       String
+  phone       String
+  dogs        Dog[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Weight {
-  id    String @id @default(uuid())
-  value Float
-  dogId String
-  dog   Dog    @relation(fields: [dogId], references: [id])
+  id          String @id @default(uuid())
+  value       Float
+  dogId       String
+  dog         Dog    @relation(fields: [dogId], references: [id])
+  createdAt   DateTime @default(now())
 }
 
 model Health {
-  id          String @id @default(uuid())
-  description String
-  dogId       String
-  dog         Dog    @relation(fields: [dogId], references: [id])
+  id              String @id @default(uuid())
+  description     String
+  dogId           String
+  dog             Dog    @relation(fields: [dogId], references: [id])
+  createdAt       DateTime @default(now())
 }
 
 model Dog {
-  id            String   @id @default(uuid())
-  name          String
-  assignedName  String?
-  passport      String?
-  chipId        String?
-  bornAt        DateTime
-  ownerId       String?
-  owner         Customer? @relation(fields: [ownerId], references: [id])
-  healths       Health[]
-  weights       Weight[]
+  id              String   @id @default(uuid())
+  name            String
+  assignedName    String?
+  passport        String?
+  chipId          String?
+  bornAt          DateTime
+  ownerId         String?
+  owner           Customer? @relation(fields: [ownerId], references: [id])
+  healths         Health[]
+  weights         Weight[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt @default(now())
 }

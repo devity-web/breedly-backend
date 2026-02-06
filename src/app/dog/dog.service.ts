@@ -14,14 +14,13 @@ export class DogService {
   async findOne(id: string) {
     this.logger.log(`Find one dog with id: ${id}`);
     const dog = await this.prisma.dog.findUnique({
-      // order: {
-      //   weights: {
-      //     createdAt: 'DESC',
-      //   },
-      // },
       where: {id},
       include: {
-        weights: true,
+        weights: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
         healths: true,
         owner: true,
       },

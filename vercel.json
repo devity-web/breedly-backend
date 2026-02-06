@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "nest build",
+  "buildCommand": "nest build && prisma migrate deploy",
   "installCommand": "pnpm install",
   "framework": null,
   "outputDirectory": "dist",
