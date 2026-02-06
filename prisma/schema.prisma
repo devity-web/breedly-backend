@@ -31,13 +31,14 @@ model Health {
 }
 
 model Dog {
-  id           String   @id @default(uuid())
-  name         String
-  assignedName String?
-  passport     String?
-  bornAt       DateTime
-  ownerId      String?
-  owner        Customer? @relation(fields: [ownerId], references: [id])
-  healths      Health[]
-  weights      Weight[]
+  id            String   @id @default(uuid())
+  name          String
+  assignedName  String?
+  passport      String?
+  chipId        String?
+  bornAt        DateTime
+  ownerId       String?
+  owner         Customer? @relation(fields: [ownerId], references: [id])
+  healths       Health[]
+  weights       Weight[]
 }
