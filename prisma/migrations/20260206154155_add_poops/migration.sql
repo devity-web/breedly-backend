@@ -1,0 +1,11 @@
+-- CreateTable
+CREATE TABLE "Poop" (
+    "id" TEXT NOT NULL,
+    "dogId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Poop_pkey" PRIMARY KEY ("id")
+);
+
+-- AddForeignKey
+ALTER TABLE "Poop" ADD CONSTRAINT "Poop_dogId_fkey" FOREIGN KEY ("dogId") REFERENCES "Dog"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

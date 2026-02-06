@@ -21,6 +21,11 @@ export class DogService {
             createdAt: 'desc',
           },
         },
+        poops: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
         healths: true,
         owner: true,
       },
@@ -89,6 +94,23 @@ export class DogService {
     });
 
     return health;
+  }
+
+  async addPoop(id: string) {
+    this.logger.log(`Add poop to dog with id: ${id} and body`);
+    const dog = await this.findOne(id);
+
+    const poop = await this.prisma.poop.create({
+      data: {
+        dog: {
+          connect: {
+            id: dog.id,
+          },
+        },
+      },
+    });
+
+    return poop;
   }
 
   async update(id: string, body: EditDogDto) {

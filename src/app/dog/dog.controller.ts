@@ -36,6 +36,11 @@ export class DogController {
     return this.dogService.addHealth(id, body);
   }
 
+  @Post('/:id/poop')
+  addPoop(@Param('id') id: string) {
+    return this.dogService.addPoop(id);
+  }
+
   @Patch('/:id')
   update(@Param('id') id: string, @Body() body: EditDogDto) {
     return this.dogService.update(id, body);
