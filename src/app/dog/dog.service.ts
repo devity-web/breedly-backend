@@ -26,7 +26,11 @@ export class DogService {
             createdAt: 'desc',
           },
         },
-        healths: true,
+        healths: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
         owner: true,
       },
     });
