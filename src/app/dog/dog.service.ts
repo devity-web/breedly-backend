@@ -1,5 +1,6 @@
 import {Injectable, Logger, NotFoundException} from '@nestjs/common';
 import {PrismaService} from '@utils/prisma.service';
+import {put} from '@vercel/blob';
 import {AddHealthDto} from './dto/add-health.dto';
 import {AddWeightDto} from './dto/add-weight.dto';
 import {CreateDogDto} from './dto/create-dog.dto';
@@ -27,6 +28,11 @@ export class DogService {
           },
         },
         healths: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
+        photos: {
           orderBy: {
             createdAt: 'desc',
           },
@@ -115,6 +121,27 @@ export class DogService {
     });
 
     return poop;
+  }
+
+  async addPhoto(id: string, file: Express.Multer.File) {
+    this.logger.log(`Add photo to dog with id: ${id} and body`);
+    const dog = await this.findOne(id);
+    const {url} = await put(`photos/${Date.now()}.jpg`, file.buffer, {
+      access: 'public',
+    });
+
+    const photo = await this.prisma.photo.create({
+      data: {
+        url,
+        dog: {
+          connect: {
+            id: dog.id,
+          },
+        },
+      },
+    });
+
+    return photo;
   }
 
   async update(id: string, body: EditDogDto) {

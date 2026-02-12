@@ -1,4 +1,14 @@
-import {Body, Controller, Get, Param, Patch, Post} from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
+import {FileInterceptor} from '@nestjs/platform-express';
 import {ApiTags} from '@nestjs/swagger';
 import {DogService} from './dog.service';
 import {AddHealthDto} from './dto/add-health.dto';
@@ -39,6 +49,12 @@ export class DogController {
   @Post('/:id/poop')
   addPoop(@Param('id') id: string) {
     return this.dogService.addPoop(id);
+  }
+
+  @Post('/:id/photo')
+  @UseInterceptors(FileInterceptor('file'))
+  addPhoto(@Param('id') id: string, @UploadedFile() file: Express.Multer.File) {
+    return this.dogService.addPhoto(id, file);
   }
 
   @Patch('/:id')
