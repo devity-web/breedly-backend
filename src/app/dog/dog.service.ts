@@ -1,7 +1,7 @@
 import {randomUUID} from 'node:crypto';
 import {Injectable, Logger, NotFoundException} from '@nestjs/common';
 import {PrismaService} from '@utils/prisma.service';
-import {put} from '@vercel/blob';
+import {del, put} from '@vercel/blob';
 import {AddHealthDto} from './dto/add-health.dto';
 import {AddWeightDto} from './dto/add-weight.dto';
 import {CreateDogDto} from './dto/create-dog.dto';
@@ -122,6 +122,21 @@ export class DogService {
     });
 
     return poop;
+  }
+
+  async deletePhoto(dogId: string, photoId: string) {
+    const photo = await this.prisma.photo.findUnique({where: {id: photoId}});
+
+    if (!photo) {
+      throw new NotFoundException('Photo not found');
+    }
+
+    await this.prisma.photo.delete({where: {id: photoId}});
+    await del(photo.url);
+
+    const dog = await this.findOne(dogId);
+
+    return dog;
   }
 
   async addPhoto(id: string, file: Express.Multer.File) {

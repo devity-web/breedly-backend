@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -55,6 +56,11 @@ export class DogController {
   @UseInterceptors(FileInterceptor('file'))
   addPhoto(@Param('id') id: string, @UploadedFile() file: Express.Multer.File) {
     return this.dogService.addPhoto(id, file);
+  }
+
+  @Delete('/:id/photo/:photoId')
+  deletePhoto(@Param('id') id: string, @Param('photoId') photoId: string) {
+    return this.dogService.deletePhoto(id, photoId);
   }
 
   @Patch('/:id')
