@@ -1,3 +1,4 @@
+import {randomUUID} from 'node:crypto';
 import {Injectable, Logger, NotFoundException} from '@nestjs/common';
 import {PrismaService} from '@utils/prisma.service';
 import {put} from '@vercel/blob';
@@ -125,14 +126,22 @@ export class DogService {
 
   async addPhoto(id: string, file: Express.Multer.File) {
     this.logger.log(`Add photo to dog with id: ${id} and body`);
+
+    const photoId = randomUUID();
     const dog = await this.findOne(id);
-    const {url} = await put(`photos/${Date.now()}.jpg`, file.buffer, {
-      access: 'public',
-    });
+
+    const {url} = await put(
+      `${process.env.NODE_ENV}/photos/${photoId}.jpg`,
+      file.buffer,
+      {
+        access: 'public',
+      },
+    );
 
     const photo = await this.prisma.photo.create({
       data: {
         url,
+        id: photoId,
         dog: {
           connect: {
             id: dog.id,
