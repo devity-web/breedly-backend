@@ -55,6 +55,7 @@ model Dog {
   assignedName String?
   passport     String?
   chipId       String?
+  color        String?
   bornAt       DateTime
   ownerId      String?
   owner        Customer? @relation(fields: [ownerId], references: [id])
