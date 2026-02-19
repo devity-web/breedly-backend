@@ -7,7 +7,9 @@ import {AppModule} from './app.module';
 
 async function bootstrap() {
   const logger = new Logger(bootstrap.name);
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    bodyParser: false,
+  });
 
   app.useGlobalPipes(new ValidationPipe({transform: true}));
   app.setGlobalPrefix('api');
@@ -28,6 +30,6 @@ async function bootstrap() {
 
   await app.listen(port);
   logger.log(`Application is running on: http://localhost:${port}/api`);
-  logger.log(`Environment: ${process.env.NODE_ENV}`)
+  logger.log(`Environment: ${process.env.NODE_ENV}`);
 }
 bootstrap();

@@ -132,7 +132,11 @@ export class DogService {
     }
 
     await this.prisma.photo.delete({where: {id: photoId}});
-    await del(photo.url);
+    try {
+      await del(photo.url);
+    } catch (e) {
+      this.logger.warn(`Failed to delete photo from blob storage`, e);
+    }
 
     const dog = await this.findOne(dogId);
 
