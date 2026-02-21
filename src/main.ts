@@ -13,7 +13,12 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe({transform: true}));
   app.setGlobalPrefix('api');
-  app.enableCors();
+  app.enableCors({
+    origin: 'http://localhost:5173',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-requested-with'],
+  });
 
   const config = new DocumentBuilder()
     .setTitle('Breedly')

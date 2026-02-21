@@ -1,5 +1,5 @@
 import {Module} from '@nestjs/common';
-import {ConfigModule} from '@nestjs/config';
+import {ConfigModule, ConfigService} from '@nestjs/config';
 import {AuthModule} from '@thallesp/nestjs-better-auth';
 import {PrismaModule} from '@utils/prisma.module';
 import {PrismaService} from '@utils/prisma.service';
@@ -13,9 +13,12 @@ import {DogModule} from './app/dog/dog.module';
   imports: [
     ConfigModule.forRoot({isGlobal: true}),
     AuthModule.forRootAsync({
-      imports: [PrismaModule],
-      inject: [PrismaService],
-      useFactory: (prismaService: PrismaService) => {
+      imports: [PrismaModule, ConfigModule],
+      inject: [PrismaService, ConfigService],
+      useFactory: (
+        prismaService: PrismaService,
+        configService: ConfigService,
+      ) => {
         return {
           auth: betterAuth({
             database: prismaAdapter(prismaService, {
@@ -24,7 +27,10 @@ import {DogModule} from './app/dog/dog.module';
             emailAndPassword: {
               enabled: true,
             },
-            trustedOrigins: ['http://localhost:5173'],
+            trustedOrigins: [
+              configService.getOrThrow<string>('AUTH_TRUSTED_ORIGIN'),
+            ],
+            baseURL: configService.getOrThrow<string>('AUTH_BASE_URL'),
           }),
         };
       },
