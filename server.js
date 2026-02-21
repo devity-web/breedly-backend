@@ -7,10 +7,17 @@ import {AppModule} from './dist/app.module';
 const server = express();
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
+  const app = await NestFactory.create(AppModule, new ExpressAdapter(server), {
+    bodyParser: false
+  });
   app.useGlobalPipes(new ValidationPipe({transform: true}));
   app.setGlobalPrefix('api');
-  app.enableCors();
+  app.enableCors({
+    origin: process.env.AUTH_TRUSTED_ORIGIN ?? 'http://localhost:5173',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-requested-with'],
+  });
 
   await app.init();
 
