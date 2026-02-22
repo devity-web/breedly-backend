@@ -27,6 +27,14 @@ import {DogModule} from './app/dog/dog.module.js';
             emailAndPassword: {
               enabled: true,
             },
+            socialProviders: {
+              google: {
+                clientId: configService.getOrThrow<string>('GOOGLE_CLIENT_ID'),
+                clientSecret: configService.getOrThrow<string>(
+                  'GOOGLE_CLIENT_SECRET',
+                ),
+              },
+            },
             trustedOrigins: [
               configService.getOrThrow<string>('AUTH_TRUSTED_ORIGIN'),
             ],
