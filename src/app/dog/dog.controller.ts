@@ -11,11 +11,11 @@ import {
 } from '@nestjs/common';
 import {FileInterceptor} from '@nestjs/platform-express';
 import {ApiTags} from '@nestjs/swagger';
-import {DogService} from './dog.service';
-import {AddHealthDto} from './dto/add-health.dto';
-import {AddWeightDto} from './dto/add-weight.dto';
-import {CreateDogDto} from './dto/create-dog.dto';
-import {EditDogDto} from './dto/edit-dog.dto';
+import {DogService} from './dog.service.js';
+import {AddHealthDto} from './dto/add-health.dto.js';
+import {AddWeightDto} from './dto/add-weight.dto.js';
+import {CreateDogDto} from './dto/create-dog.dto.js';
+import {EditDogDto} from './dto/edit-dog.dto.js';
 
 @Controller('dogs')
 @ApiTags('dogs')

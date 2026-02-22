@@ -1,11 +1,13 @@
 import {Module} from '@nestjs/common';
 import {ConfigModule, ConfigService} from '@nestjs/config';
-import {PrismaModule} from '@utils/prisma.module';
-import {PrismaService} from '@utils/prisma.service';
-import {AuthModule} from './app/auth/auth.module';
-import {CustomerModule} from './app/customer/customer.module';
-import {DashboardModule} from './app/dashboard/dashboard.module';
-import {DogModule} from './app/dog/dog.module';
+import {PrismaModule} from '@utils/prisma.module.js';
+import {PrismaService} from '@utils/prisma.service.js';
+import {betterAuth} from 'better-auth';
+import {prismaAdapter} from 'better-auth/adapters/prisma';
+import {AuthModule} from './app/auth/auth.module.js';
+import {CustomerModule} from './app/customer/customer.module.js';
+import {DashboardModule} from './app/dashboard/dashboard.module.js';
+import {DogModule} from './app/dog/dog.module.js';
 
 @Module({
   imports: [
@@ -17,8 +19,6 @@ import {DogModule} from './app/dog/dog.module';
         prismaService: PrismaService,
         configService: ConfigService,
       ) => {
-        const {betterAuth} = await import('better-auth');
-        const {prismaAdapter} = await import('better-auth/adapters/prisma');
         return {
           auth: betterAuth({
             database: prismaAdapter(prismaService, {

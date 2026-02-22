@@ -1,11 +1,11 @@
 import {randomUUID} from 'node:crypto';
 import {Injectable, Logger, NotFoundException} from '@nestjs/common';
-import {PrismaService} from '@utils/prisma.service';
+import {PrismaService} from '@utils/prisma.service.js';
 import {del, put} from '@vercel/blob';
-import {AddHealthDto} from './dto/add-health.dto';
-import {AddWeightDto} from './dto/add-weight.dto';
-import {CreateDogDto} from './dto/create-dog.dto';
-import {EditDogDto} from './dto/edit-dog.dto';
+import {AddHealthDto} from './dto/add-health.dto.js';
+import {AddWeightDto} from './dto/add-weight.dto.js';
+import {CreateDogDto} from './dto/create-dog.dto.js';
+import {EditDogDto} from './dto/edit-dog.dto.js';
 
 @Injectable()
 export class DogService {

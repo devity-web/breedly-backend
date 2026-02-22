@@ -1,6 +1,6 @@
 import {Injectable, Logger, NotFoundException} from '@nestjs/common';
-import {PrismaService} from '@utils/prisma.service';
-import {AddCustomerDto} from './dto/add-customer.dto';
+import {PrismaService} from '@utils/prisma.service.js';
+import {AddCustomerDto} from './dto/add-customer.dto.js';
 
 @Injectable()
 export class CustomerService {

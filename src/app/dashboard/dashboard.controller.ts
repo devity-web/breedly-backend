@@ -1,6 +1,6 @@
 import {Controller, Get} from '@nestjs/common';
 import {ApiTags} from '@nestjs/swagger';
-import {DashboardService} from './dashboard.service';
+import {DashboardService} from './dashboard.service.js';
 
 @Controller('dashboard')
 @ApiTags('dashboard')

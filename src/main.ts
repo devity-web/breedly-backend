@@ -1,9 +1,9 @@
-import 'tsconfig-paths/register';
+import 'tsconfig-paths/register.js';
 
 import {Logger, ValidationPipe} from '@nestjs/common';
 import {NestFactory} from '@nestjs/core';
 import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger';
-import {AppModule} from './app.module';
+import {AppModule} from './app.module.js';
 
 async function bootstrap() {
   const logger = new Logger(bootstrap.name);
