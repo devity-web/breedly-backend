@@ -7,9 +7,7 @@ import {AppModule} from './dist/app.module';
 const server = express();
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, new ExpressAdapter(server), {
-    bodyParser: false
-  });
+  const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
   app.useGlobalPipes(new ValidationPipe({transform: true}));
   app.setGlobalPrefix('api');
   app.enableCors({
