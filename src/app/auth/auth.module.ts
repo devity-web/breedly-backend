@@ -10,12 +10,10 @@ import {
   Provider,
   RequestMethod,
 } from '@nestjs/common';
-import {type Auth} from 'better-auth';
-import {toNodeHandler} from 'better-auth/node';
 import express from 'express';
 
 export interface AuthOptions {
-  auth: Auth;
+  auth: any;
 }
 
 export interface AuthModuleAsyncOptions {
@@ -47,7 +45,8 @@ export class AuthModule implements NestModule {
 
   constructor(@Inject('AUTH_OPTIONS_TOKEN') private options: AuthOptions) {}
 
-  configure(consumer: MiddlewareConsumer) {
+  async configure(consumer: MiddlewareConsumer) {
+    const {toNodeHandler} = await import('better-auth/node');
     const basePath = this.options.auth.options.basePath || '/auth';
 
     consumer
