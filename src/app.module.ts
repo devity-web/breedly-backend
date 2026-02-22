@@ -1,6 +1,6 @@
 import {Module} from '@nestjs/common';
 import {ConfigModule, ConfigService} from '@nestjs/config';
-import {AuthModule} from '@thallesp/nestjs-better-auth';
+import {AuthModule} from '@pedr0ni/nestjs-better-auth';
 import {PrismaModule} from '@utils/prisma.module';
 import {PrismaService} from '@utils/prisma.service';
 import {betterAuth} from 'better-auth';
