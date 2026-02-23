@@ -27,6 +27,10 @@ import {DogModule} from './app/dog/dog.module.js';
             emailAndPassword: {
               enabled: true,
             },
+            advanced: {
+              cookiePrefix: 'auth',
+              useSecureCookies: process.env.NODE_ENV === 'production',
+            },
             socialProviders: {
               google: {
                 clientId: configService.getOrThrow<string>('GOOGLE_CLIENT_ID'),
